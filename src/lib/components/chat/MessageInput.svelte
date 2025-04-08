@@ -1224,6 +1224,7 @@
 												>
 													<svg
 														xmlns="http://www.w3.org/2000/svg"
+														id="voice-input-button-svg"
 														viewBox="0 0 20 20"
 														fill="currentColor"
 														class="w-5 h-5 translate-y-[0.5px]"
@@ -1242,6 +1243,7 @@
 												<div class=" flex items-center">
 													<Tooltip content={$i18n.t('Call')}>
 														<button
+															id="call-button"
 															class=" {webSearchEnabled ||
 															($settings?.webSearch ?? false) === 'always'
 																? 'bg-blue-500 text-white hover:bg-blue-400 '
@@ -1321,6 +1323,7 @@
 															<svg
 																xmlns="http://www.w3.org/2000/svg"
 																viewBox="0 0 16 16"
+																id="send-message-button-svg"
 																fill="currentColor"
 																class="size-5"
 															>
