@@ -1,28 +1,21 @@
-/* Define theme colors as CSS variables */
+
 .maxwild {
-	/* Primary Colors */
-	--primary: #00572E;        /* Main green color */
-	--secondary: #EC7404;      /* Orange accent */
-	--tertiary: #ffffff;      /* Darker green */
+	--primary: #00572E;        
+	--secondary: #EC7404;      
+	--tertiary: #ffffff;      
+
+	--bg-primary: #ffffff;     
+	--bg-secondary: #F4F4F0;   
+
+	--text-primary: #00572E;   
+	--text-light: #ffffff;     
 	
-	/* Background Colors */
-	--bg-primary: #ffffff;     /* Main background */
-	--bg-secondary: #F4F4F0;   /* Secondary background (sidebar) */
-	
-	/* Text Colors */
-	--text-primary: #00572E;   /* Main text color */
-	--text-light: #ffffff;     /* Light text (for dark backgrounds) */
-	
-	/* Interactive Colors */
-	--hover-color: #ececec;    /* Hover state */
-	--active-color: #1E4D3C;   /* Active/Selected state */
-	
-	/* Border Colors */
+	--hover-color: #ececec;    
+	--active-color: #1E4D3C;   
 	--border-color: #000000;
 	--outline-color: #00572E;
 }
 
-/* Then use these variables throughout your styles */
 .maxwild * {
 	color: var(--text-primary) !important;
 	stroke: var(--tertiary) !important;
