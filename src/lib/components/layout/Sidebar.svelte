@@ -48,22 +48,15 @@
 	import ChatItem from './Sidebar/ChatItem.svelte';
 	import Spinner from '../common/Spinner.svelte';
 	import Loader from '../common/Loader.svelte';
-	import AddFilesPlaceholder from '../AddFilesPlaceholder.svelte';
 	import SearchInput from './Sidebar/SearchInput.svelte';
 	import Folder from '../common/Folder.svelte';
-	import Plus from '../icons/Plus.svelte';
-	import Tooltip from '../common/Tooltip.svelte';
+
 	import Folders from './Sidebar/Folders.svelte';
 	import { getChannels, createNewChannel } from '$lib/apis/channels';
 	import ChannelModal from './Sidebar/ChannelModal.svelte';
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
-	import Home from '../icons/Home.svelte';
-	import ModelSelector from '../chat/ModelSelector.svelte';
-	import Selector from '../chat/ModelSelector/Selector.svelte';
-	import SelectorContent from '../chat/ModelSelector/SelectorContent.svelte';
 	import SelectorLists from '../chat/ModelSelector/SelectorLists.svelte';
-	import Chat from '../chat/Chat.svelte';
 
 	const BREAKPOINT = 768;
 
@@ -664,32 +657,6 @@
 
 			<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
 				<div class="flex flex-col space-y-1 rounded-xl">
-					<!-- <Selector
-						id={`0`}
-						show={true}
-						placeholder={$i18n.t('Select a model')}
-						items={$models.map((model) => ({
-							value: model.id,
-							label: model.name,
-							model: model
-						}))}
-						showTemporaryChatControl={$user?.role === 'user'
-							? ($user?.permissions?.chat?.temporary ?? true) &&
-								!($user?.permissions?.chat?.temporary_enforced ?? false)
-							: true}
-					/> -->
-					<!-- <SelectorContent
-						bind:this={selectorContentRef}
-						items={$models.map((model) => ({
-							value: model.id,
-							label: model.name,
-							model: model
-						}))}
-						value={null}
-						searchValue={search}
-						show={null}
-						onSelect={() => {}}
-					/> -->
 					<SelectorLists
 						items={$models.map((model) => ({
 							value: model.id,
@@ -698,13 +665,7 @@
 						}))}
 						searchEnabled={false}
 						searchPlaceholder={$i18n.t('Search a model')}
-						initNewChat={async () => {
-							goto('/', {
-								replaceState: true,
-								invalidateAll: true,
-								state: { instantNewChat: true }
-							});
-						}}
+						directModelAccess={true}
 					/>
 				</div>
 			</Folder>

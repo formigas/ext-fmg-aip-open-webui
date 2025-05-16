@@ -31,7 +31,6 @@
 
 	let tags = [];
 
-	let selectedModel = '';
 	let selectedTag = '';
 
 	let selectedConnectionType = '';
@@ -39,7 +38,7 @@
 	let ollamaVersion = null;
 	let selectedModelIdx = 0;
 
-	export let initNewChat: Function;
+	export let directModelAccess: boolean = false;
 
 	const i18n = getContext('i18n');
 
@@ -54,7 +53,7 @@
 	export let searchPlaceholder = $i18n.t('Search a model');
 	export let showTemporaryChatControl = false;
 	export let value = '';
-	let showSelectedModel = initNewChat ? false : true;
+	const showSelectedModel = directModelAccess ? false : true;
 
 	const cancelModelPullHandler = async (model: string) => {
 		const { reader, abortController } = $MODEL_DOWNLOAD_POOL[model];
@@ -429,16 +428,15 @@
 				on:click={async () => {
 					value = item.value;
 					selectedModelIdx = index;
-
-					if (initNewChat) {
-						console.log('initNewChat is not null');
-						await initNewChat();
-					}
-					// setTimeout(() => {
-					// 	goto('/', { state: { instantNewChat: true } });
-					// }, 0);
-
 					show = false;
+
+					if (directModelAccess) {
+						await goto('/?model=' + item.model.id);
+						const newChatButton = document.getElementById('new-chat-button');
+						setTimeout(() => {
+							newChatButton?.click();
+						}, 0);
+					}
 				}}
 			>
 				<div class="flex flex-col">
