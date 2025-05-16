@@ -1,15 +1,10 @@
 <script lang="ts">
-	import DOMPurify from 'dompurify';
-
-	import { onMount, getContext, createEventDispatcher, onDestroy } from 'svelte';
-	import * as FocusTrap from 'focus-trap';
-
+	import { onMount, getContext, createEventDispatcher } from 'svelte';
 	const i18n = getContext('i18n');
 	const dispatch = createEventDispatcher();
 
 	import { fade } from 'svelte/transition';
 	import { flyAndScale } from '$lib/utils/transitions';
-	import { marked } from 'marked';
 
 	export let title = '';
 	export let message = '';
@@ -27,8 +22,6 @@
 
 	let modalElement = null;
 	let mounted = false;
-
-	let focusTrap: FocusTrap.FocusTrap | null = null;
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
@@ -55,30 +48,16 @@
 	$: if (mounted) {
 		if (show && modalElement) {
 			document.body.appendChild(modalElement);
-			focusTrap = FocusTrap.createFocusTrap(modalElement);
-			focusTrap.activate();
 
 			window.addEventListener('keydown', handleKeyDown);
 			document.body.style.overflow = 'hidden';
 		} else if (modalElement) {
-			focusTrap.deactivate();
-
 			window.removeEventListener('keydown', handleKeyDown);
 			document.body.removeChild(modalElement);
 
 			document.body.style.overflow = 'unset';
 		}
 	}
-
-	onDestroy(() => {
-		show = false;
-		if (focusTrap) {
-			focusTrap.deactivate();
-		}
-		if (modalElement) {
-			document.body.removeChild(modalElement);
-		}
-	});
 </script>
 
 {#if show}
@@ -111,8 +90,7 @@
 				<slot>
 					<div class=" text-sm text-gray-500 flex-1">
 						{#if message !== ''}
-							{@const html = DOMPurify.sanitize(marked.parse(message))}
-							{@html html}
+							{message}
 						{:else}
 							{$i18n.t('This action cannot be undone. Do you wish to continue?')}
 						{/if}

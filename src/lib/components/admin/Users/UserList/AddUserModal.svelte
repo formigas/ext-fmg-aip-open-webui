@@ -7,7 +7,6 @@
 	import { WEBUI_BASE_URL } from '$lib/constants';
 
 	import Modal from '$lib/components/common/Modal.svelte';
-	import { generateInitialsImage } from '$lib/utils';
 
 	const i18n = getContext('i18n');
 	const dispatch = createEventDispatcher();
@@ -48,8 +47,7 @@
 				_user.name,
 				_user.email,
 				_user.password,
-				_user.role,
-				generateInitialsImage(_user.name)
+				_user.role
 			).catch((error) => {
 				toast.error(`${error}`);
 			});
@@ -85,8 +83,7 @@
 									columns[0],
 									columns[1],
 									columns[2],
-									columns[3].toLowerCase(),
-									generateInitialsImage(columns[0])
+									columns[3].toLowerCase()
 								).catch((error) => {
 									toast.error(`Row ${idx + 1}: ${error}`);
 									return null;
@@ -112,7 +109,7 @@
 					stopLoading();
 				};
 
-				reader.readAsText(file, 'utf-8');
+				reader.readAsText(file);
 			} else {
 				toast.error($i18n.t('File not found.'));
 			}

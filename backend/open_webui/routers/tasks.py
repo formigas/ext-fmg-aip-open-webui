@@ -186,9 +186,20 @@ async def generate_title(
     else:
         template = DEFAULT_TITLE_GENERATION_PROMPT_TEMPLATE
 
+    messages = form_data["messages"]
+
+    # Remove reasoning details from the messages
+    for message in messages:
+        message["content"] = re.sub(
+            r"<details\s+type=\"reasoning\"[^>]*>.*?<\/details>",
+            "",
+            message["content"],
+            flags=re.S,
+        ).strip()
+
     content = title_generation_template(
         template,
-        form_data["messages"],
+        messages,
         {
             "name": user.name,
             "location": user.info.get("location") if user.info else None,

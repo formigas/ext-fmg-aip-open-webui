@@ -778,7 +778,7 @@
 						</div>
 					</button>
 				</div>
-			{:else}
+			{:else if filteredItems.length === 0}
 				<div class="mb-3"></div>
 			{/if}
 

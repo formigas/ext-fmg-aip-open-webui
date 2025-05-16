@@ -357,14 +357,14 @@
 			{#if recording}
 				<VoiceRecording
 					bind:recording
-					onCancel={async () => {
+					on:cancel={async () => {
 						recording = false;
 
 						await tick();
 						document.getElementById(`chat-input-${id}`)?.focus();
 					}}
-					onConfirm={async (data) => {
-						const { text, filename } = data;
+					on:confirm={async (e) => {
+						const { text, filename } = e.detail;
 						content = `${content}${text} `;
 						recording = false;
 

@@ -7,6 +7,9 @@
 	import markedKatexExtension from '$lib/utils/marked/katex-extension';
 
 	import MarkdownTokens from './Markdown/MarkdownTokens.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let id = '';
 	export let content;
@@ -14,9 +17,6 @@
 	export let save = false;
 
 	export let sourceIds = [];
-
-	export let onUpdate = () => {};
-	export let onCode = () => {};
 
 	export let onSourceClick = () => {};
 	export let onTaskClick = () => {};
@@ -40,5 +40,17 @@
 </script>
 
 {#key id}
-	<MarkdownTokens {tokens} {id} {save} {onTaskClick} {onSourceClick} {onUpdate} {onCode} />
+	<MarkdownTokens
+		{tokens}
+		{id}
+		{save}
+		{onTaskClick}
+		{onSourceClick}
+		on:update={(e) => {
+			dispatch('update', e.detail);
+		}}
+		on:code={(e) => {
+			dispatch('code', e.detail);
+		}}
+	/>
 {/key}

@@ -116,33 +116,10 @@ export const updateUserRole = async (token: string, id: string, role: string) =>
 	return res;
 };
 
-export const getUsers = async (
-	token: string,
-	query?: string,
-	orderBy?: string,
-	direction?: string,
-	page = 1
-) => {
+export const getUsers = async (token: string) => {
 	let error = null;
-	let res = null;
 
-	let searchParams = new URLSearchParams();
-
-	searchParams.set('page', `${page}`);
-
-	if (query) {
-		searchParams.set('query', query);
-	}
-
-	if (orderBy) {
-		searchParams.set('order_by', orderBy);
-	}
-
-	if (direction) {
-		searchParams.set('direction', direction);
-	}
-
-	res = await fetch(`${WEBUI_API_BASE_URL}/users/?${searchParams.toString()}`, {
+	const res = await fetch(`${WEBUI_API_BASE_URL}/users/`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -163,35 +140,7 @@ export const getUsers = async (
 		throw error;
 	}
 
-	return res;
-};
-
-export const getAllUsers = async (token: string) => {
-	let error = null;
-	let res = null;
-
-	res = await fetch(`${WEBUI_API_BASE_URL}/users/all`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
-		}
-	})
-		.then(async (res) => {
-			if (!res.ok) throw await res.json();
-			return res.json();
-		})
-		.catch((err) => {
-			console.log(err);
-			error = err.detail;
-			return null;
-		});
-
-	if (error) {
-		throw error;
-	}
-
-	return res;
+	return res ? res : [];
 };
 
 export const getUserSettings = async (token: string) => {

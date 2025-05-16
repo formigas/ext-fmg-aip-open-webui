@@ -13,7 +13,6 @@
 	import Image from '$lib/components/common/Image.svelte';
 	import KatexRenderer from './KatexRenderer.svelte';
 	import Source from './Source.svelte';
-	import HtmlToken from './HTMLToken.svelte';
 
 	export let id: string;
 	export let tokens: Token[];
@@ -24,7 +23,16 @@
 	{#if token.type === 'escape'}
 		{unescapeHtml(token.text)}
 	{:else if token.type === 'html'}
-		<HtmlToken {id} {token} {onSourceClick} />
+		{@const html = DOMPurify.sanitize(token.text)}
+		{#if html && html.includes('<video')}
+			{@html html}
+		{:else if token.text.includes(`<iframe src="${WEBUI_BASE_URL}/api/v1/files/`)}
+			{@html `${token.text}`}
+		{:else if token.text.includes(`<source_id`)}
+			<Source {id} {token} onClick={onSourceClick} />
+		{:else}
+			{@html html}
+		{/if}
 	{:else if token.type === 'link'}
 		{#if token.tokens}
 			<a href={token.href} target="_blank" rel="nofollow" title={token.title}>

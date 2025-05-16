@@ -62,17 +62,12 @@ class YoutubeLoader:
         _video_id = _parse_video_id(video_id)
         self.video_id = _video_id if _video_id is not None else video_id
         self._metadata = {"source": video_id}
+        self.language = language
         self.proxy_url = proxy_url
-
-        # Ensure language is a list
         if isinstance(language, str):
             self.language = [language]
         else:
-            self.language = list(language)
-
-        # Add English as fallback if not already in the list
-        if "en" not in self.language:
-            self.language.append("en")
+            self.language = language
 
     def load(self) -> List[Document]:
         """Load YouTube transcripts into `Document` objects."""
@@ -106,31 +101,17 @@ class YoutubeLoader:
             log.exception("Loading YouTube transcript failed")
             return []
 
-        # Try each language in order of priority
-        for lang in self.language:
-            try:
-                transcript = transcript_list.find_transcript([lang])
-                log.debug(f"Found transcript for language '{lang}'")
-                transcript_pieces: List[Dict[str, Any]] = transcript.fetch()
-                transcript_text = " ".join(
-                    map(
-                        lambda transcript_piece: transcript_piece.text.strip(" "),
-                        transcript_pieces,
-                    )
-                )
-                return [Document(page_content=transcript_text, metadata=self._metadata)]
-            except NoTranscriptFound:
-                log.debug(f"No transcript found for language '{lang}'")
-                continue
-            except Exception as e:
-                log.info(f"Error finding transcript for language '{lang}'")
-                raise e
+        try:
+            transcript = transcript_list.find_transcript(self.language)
+        except NoTranscriptFound:
+            transcript = transcript_list.find_transcript(["en"])
 
-        # If we get here, all languages failed
-        languages_tried = ", ".join(self.language)
-        log.warning(
-            f"No transcript found for any of the specified languages: {languages_tried}. Verify if the video has transcripts, add more languages if needed."
+        transcript_pieces: List[Dict[str, Any]] = transcript.fetch()
+
+        transcript = " ".join(
+            map(
+                lambda transcript_piece: transcript_piece.text.strip(" "),
+                transcript_pieces,
+            )
         )
-        raise NoTranscriptFound(
-            f"No transcript found for any supported language. Verify if the video has transcripts, add more languages if needed."
-        )
+        return [Document(page_content=transcript, metadata=self._metadata)]

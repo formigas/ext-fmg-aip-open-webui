@@ -56,7 +56,6 @@
 		}
 	}
 
-	let system = '';
 	let info = {
 		id: '',
 		base_model_id: null,
@@ -156,7 +155,6 @@
 			}
 		}
 
-		info.params.system = system.trim() === '' ? null : system;
 		info.params.stop = params.stop ? params.stop.split(',').filter((s) => s.trim()) : null;
 		Object.keys(info.params).forEach((key) => {
 			if (info.params[key] === '' || info.params[key] === null) {
@@ -202,8 +200,6 @@
 					model.base_model_id = null;
 				}
 			}
-
-			system = model?.params?.system ?? '';
 
 			params = { ...params, ...model?.params };
 			params.stop = params?.stop
@@ -557,7 +553,7 @@
 										className=" text-sm w-full bg-transparent outline-hidden resize-none overflow-y-hidden "
 										placeholder={`Write your model system prompt content here\ne.g.) You are Mario from Super Mario Bros, acting as an assistant.`}
 										rows={4}
-										bind:value={system}
+										bind:value={info.params.system}
 									/>
 								</div>
 							</div>

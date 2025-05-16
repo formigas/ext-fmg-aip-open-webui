@@ -29,21 +29,16 @@
 
 	export let oncompositionstart = (e) => {};
 	export let oncompositionend = (e) => {};
-	export let onChange = (e) => {};
 
 	// create a lowlight instance with all languages loaded
 	const lowlight = createLowlight(all);
 
 	export let className = 'input-prose';
 	export let placeholder = 'Type here...';
-
-	export let id = '';
 	export let value = '';
-	export let html = '';
+	export let id = '';
 
-	export let json = false;
 	export let raw = false;
-	export let editable = true;
 
 	export let preserveBreaks = false;
 	export let generateAutoCompletion: Function = async () => null;
@@ -58,16 +53,6 @@
 	const options = {
 		throwOnError: false
 	};
-
-	$: if (editor) {
-		editor.setOptions({
-			editable: editable
-		});
-	}
-
-	$: if (value === null && html !== null && editor) {
-		editor.commands.setContent(html);
-	}
 
 	// Function to find the next template in the document
 	function findNextTemplate(doc, from = 0) {
@@ -143,46 +128,40 @@
 	};
 
 	onMount(async () => {
-		let content = value;
+		console.log(value);
 
-		if (!json) {
-			if (preserveBreaks) {
-				turndownService.addRule('preserveBreaks', {
-					filter: 'br', // Target <br> elements
-					replacement: function (content) {
-						return '<br/>';
-					}
-				});
-			}
-
-			if (!raw) {
-				async function tryParse(value, attempts = 3, interval = 100) {
-					try {
-						// Try parsing the value
-						return marked.parse(value.replaceAll(`\n<br/>`, `<br/>`), {
-							breaks: false
-						});
-					} catch (error) {
-						// If no attempts remain, fallback to plain text
-						if (attempts <= 1) {
-							return value;
-						}
-						// Wait for the interval, then retry
-						await new Promise((resolve) => setTimeout(resolve, interval));
-						return tryParse(value, attempts - 1, interval); // Recursive call
-					}
+		if (preserveBreaks) {
+			turndownService.addRule('preserveBreaks', {
+				filter: 'br', // Target <br> elements
+				replacement: function (content) {
+					return '<br/>';
 				}
-
-				// Usage example
-				content = await tryParse(value);
-			}
-		} else {
-			if (html && !content) {
-				content = html;
-			}
+			});
 		}
 
-		console.log('content', content);
+		let content = value;
+
+		if (!raw) {
+			async function tryParse(value, attempts = 3, interval = 100) {
+				try {
+					// Try parsing the value
+					return marked.parse(value.replaceAll(`\n<br/>`, `<br/>`), {
+						breaks: false
+					});
+				} catch (error) {
+					// If no attempts remain, fallback to plain text
+					if (attempts <= 1) {
+						return value;
+					}
+					// Wait for the interval, then retry
+					await new Promise((resolve) => setTimeout(resolve, interval));
+					return tryParse(value, attempts - 1, interval); // Recursive call
+				}
+			}
+
+			// Usage example
+			content = await tryParse(value);
+		}
 
 		editor = new Editor({
 			element: element,
@@ -219,44 +198,32 @@
 				// force re-render so `editor.isActive` works as expected
 				editor = editor;
 
-				html = editor.getHTML();
+				if (!raw) {
+					let newValue = turndownService
+						.turndown(
+							editor
+								.getHTML()
+								.replace(/<p><\/p>/g, '<br/>')
+								.replace(/ {2,}/g, (m) => m.replace(/ /g, '\u00a0'))
+						)
+						.replace(/\u00a0/g, ' ');
 
-				onChange({
-					html: editor.getHTML(),
-					json: editor.getJSON(),
-					md: turndownService.turndown(editor.getHTML())
-				});
+					if (!preserveBreaks) {
+						newValue = newValue.replace(/<br\/>/g, '');
+					}
 
-				if (json) {
-					value = editor.getJSON();
-				} else {
-					if (!raw) {
-						let newValue = turndownService
-							.turndown(
-								editor
-									.getHTML()
-									.replace(/<p><\/p>/g, '<br/>')
-									.replace(/ {2,}/g, (m) => m.replace(/ /g, '\u00a0'))
-							)
-							.replace(/\u00a0/g, ' ');
+					if (value !== newValue) {
+						value = newValue;
 
-						if (!preserveBreaks) {
-							newValue = newValue.replace(/<br\/>/g, '');
-						}
-
-						if (value !== newValue) {
-							value = newValue;
-
-							// check if the node is paragraph as well
-							if (editor.isActive('paragraph')) {
-								if (value === '') {
-									editor.commands.clearContent();
-								}
+						// check if the node is paragraph as well
+						if (editor.isActive('paragraph')) {
+							if (value === '') {
+								editor.commands.clearContent();
 							}
 						}
-					} else {
-						value = editor.getHTML();
 					}
+				} else {
+					value = editor.getHTML();
 				}
 			},
 			editorProps: {
@@ -389,49 +356,35 @@
 		}
 	});
 
-	$: if (value !== null && editor) {
-		onValueChange();
-	}
-
-	const onValueChange = () => {
-		if (!editor) return;
-
-		if (json) {
-			if (JSON.stringify(value) !== JSON.stringify(editor.getJSON())) {
-				editor.commands.setContent(value);
-				selectTemplate();
-			}
+	// Update the editor content if the external `value` changes
+	$: if (
+		editor &&
+		(raw
+			? value !== editor.getHTML()
+			: value !==
+				turndownService
+					.turndown(
+						(preserveBreaks
+							? editor.getHTML().replace(/<p><\/p>/g, '<br/>')
+							: editor.getHTML()
+						).replace(/ {2,}/g, (m) => m.replace(/ /g, '\u00a0'))
+					)
+					.replace(/\u00a0/g, ' '))
+	) {
+		if (raw) {
+			editor.commands.setContent(value);
 		} else {
-			if (raw) {
-				if (value !== editor.getHTML()) {
-					editor.commands.setContent(value);
-					selectTemplate();
-				}
-			} else {
-				if (
-					value !==
-					turndownService
-						.turndown(
-							(preserveBreaks
-								? editor.getHTML().replace(/<p><\/p>/g, '<br/>')
-								: editor.getHTML()
-							).replace(/ {2,}/g, (m) => m.replace(/ /g, '\u00a0'))
-						)
-						.replace(/\u00a0/g, ' ')
-				) {
-					preserveBreaks
-						? editor.commands.setContent(value)
-						: editor.commands.setContent(
-								marked.parse(value.replaceAll(`\n<br/>`, `<br/>`), {
-									breaks: false
-								})
-							); // Update editor content
-
-					selectTemplate();
-				}
-			}
+			preserveBreaks
+				? editor.commands.setContent(value)
+				: editor.commands.setContent(
+						marked.parse(value.replaceAll(`\n<br/>`, `<br/>`), {
+							breaks: false
+						})
+					); // Update editor content
 		}
-	};
+
+		selectTemplate();
+	}
 </script>
 
 <div bind:this={element} class="relative w-full min-w-full h-full min-h-fit {className}" />

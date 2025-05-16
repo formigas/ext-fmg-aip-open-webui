@@ -121,8 +121,8 @@
 			bind:open
 			className="w-full "
 			buttonClassName="w-full"
-			onChange={(state) => {
-				dispatch('change', state);
+			on:change={(e) => {
+				dispatch('change', e.detail);
 			}}
 		>
 			<!-- svelte-ignore a11y-no-static-element-interactions -->

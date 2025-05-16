@@ -4,7 +4,6 @@
 	export let value = '';
 	export let placeholder = '';
 	export let rows = 1;
-	export let minSize = null;
 	export let required = false;
 	export let className =
 		'w-full rounded-lg px-3 py-2 text-sm bg-gray-50 dark:text-gray-300 dark:bg-gray-850 outline-hidden  h-full';
@@ -30,9 +29,7 @@
 	const resize = () => {
 		if (textareaElement) {
 			textareaElement.style.height = '';
-			textareaElement.style.height = minSize
-				? `${Math.max(textareaElement.scrollHeight, minSize)}px`
-				: `${textareaElement.scrollHeight}px`;
+			textareaElement.style.height = `${textareaElement.scrollHeight}px`;
 		}
 	};
 </script>
