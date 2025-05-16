@@ -40,6 +40,7 @@
 	let largeTextAsFile = false;
 
 	let landingPageMode = '';
+	let directModelAccess = false;
 	let chatBubble = true;
 	let chatDirection: 'LTR' | 'RTL' | 'auto' = 'auto';
 	let ctrlEnterToSend = false;
@@ -105,6 +106,11 @@
 	const toggleLandingPageMode = async () => {
 		landingPageMode = landingPageMode === '' ? 'chat' : '';
 		saveSettings({ landingPageMode: landingPageMode });
+	};
+
+	const toggleDirectModelAccess = async () => {
+		directModelAccess = !directModelAccess;
+		saveSettings({ directModelAccess: directModelAccess });
 	};
 
 	const toggleShowUpdateToast = async () => {
@@ -522,6 +528,23 @@
 					</div>
 				</div>
 			{/if}
+			<div class=" py-0.5 flex w-full justify-between">
+				<div class=" self-center text-xs">{$i18n.t('Direct Model Access')}</div>
+
+				<button
+					class="p-1 px-3 text-xs flex rounded-sm transition"
+					on:click={() => {
+						toggleDirectModelAccess();
+					}}
+					type="button"
+				>
+					{#if directModelAccess === true}
+						<span class="ml-2 self-center">{$i18n.t('On')}</span>
+					{:else}
+						<span class="ml-2 self-center">{$i18n.t('Off')}</span>
+					{/if}
+				</button>
+			</div>
 
 			<div class=" my-1.5 text-sm font-medium">{$i18n.t('Chat')}</div>
 
