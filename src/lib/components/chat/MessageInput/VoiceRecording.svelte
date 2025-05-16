@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
-	import { createEventDispatcher, tick, getContext, onMount, onDestroy } from 'svelte';
 	import { config, settings } from '$lib/stores';
-	import { blobToFile, calculateSHA256, extractCurlyBraceWords } from '$lib/utils';
+	import { blobToFile } from '$lib/utils';
+	import { createEventDispatcher, getContext, onDestroy, onMount, tick } from 'svelte';
+	import { toast } from 'svelte-sonner';
 
 	import { transcribeAudio } from '$lib/apis/audio';
 
@@ -110,15 +110,15 @@
 
 					visualizerData = visualizerData;
 
-					// if (domainData.some((value) => value > 0)) {
-					// 	lastSoundTime = Date.now();
-					// }
+					if (domainData.some((value) => value > 0)) {
+						lastSoundTime = Date.now();
+					}
 
-					// if (recording && Date.now() - lastSoundTime > 3000) {
-					// 	if ($settings?.speechAutoSend ?? false) {
-					// 		confirmRecording();
-					// 	}
-					// }
+					if (recording && Date.now() - lastSoundTime > 3000) {
+						if ($settings?.speechAutoSend ?? false) {
+							confirmRecording();
+						}
+					}
 				}
 
 				window.requestAnimationFrame(processFrame);
