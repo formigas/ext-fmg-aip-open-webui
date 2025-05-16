@@ -21,11 +21,7 @@
 
 	import { generateAutoCompletion } from '$lib/apis';
 	import { deleteFileById, uploadFile } from '$lib/apis/files';
-	import {
-		compressImage,
-		createMessagesList,
-		extractCurlyBraceWords
-	} from '$lib/utils';
+	import { compressImage, createMessagesList, extractCurlyBraceWords } from '$lib/utils';
 
 	import { PASTED_TEXT_CHARACTER_LIMIT, WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 
@@ -1185,44 +1181,63 @@
 
 									<div class="self-end flex space-x-1 mr-1 shrink-0">
 										{#if (!history?.currentId || history.messages[history.currentId]?.done == true) && ($_user?.role === 'admin' || ($_user?.permissions?.chat?.stt ?? true))}
-											<img 
-												src="nonexistent_dummy_image.gif"
-												style="display:none"
-												on:error={setTimeout(async () => {recording = automaticRecording}, 7000)}
-											>
-											<Tooltip content="Toggle automatic voice input">
-												<button
-													id="automatic-voice-input-button"
-													class=" text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 transition rounded-full p-1.5 mr-0.5 self-center"
-													type="button"
-													on:click={async () => {recording = automaticRecording = !automaticRecording}}
-													aria-label="Automatic Voice Input"
-												>
-													{#if automaticRecording}
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															viewBox="0 0 32 32"
-															fill="green"
-															class="w-5 h-5 translate-y-[0.5px]"
-														>
-															<path d="M26,16H22a2.002,2.002,0,0,0-2,2V30h2V25h4v5h2V18A2.002,2.002,0,0,0,26,16Zm-4,7V18h4v5Z"/>
-															<path d="M16,27a10.9862,10.9862,0,0,1-9.2156-5H12V20H4v8H6V24.3149A13.0239,13.0239,0,0,0,16,29Z"/>
-															<path d="M20,10h5.2155A10.9973,10.9973,0,0,0,5,16H3A13.0048,13.0048,0,0,1,26,7.6849V4h2v8H20Z"/>
-														</svg>
-													{:else}
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															viewBox="0 0 32 32"
-															fill="currentColor"
-															class="w-5 h-5 translate-y-[0.5px]"
-														>
-															<path d="M26,16H22a2.002,2.002,0,0,0-2,2V30h2V25h4v5h2V18A2.002,2.002,0,0,0,26,16Zm-4,7V18h4v5Z"/>
-															<path d="M16,27a10.9862,10.9862,0,0,1-9.2156-5H12V20H4v8H6V24.3149A13.0239,13.0239,0,0,0,16,29Z"/>
-															<path d="M20,10h5.2155A10.9973,10.9973,0,0,0,5,16H3A13.0048,13.0048,0,0,1,26,7.6849V4h2v8H20Z"/>
-														</svg>
-													{/if}
-												</button>
-											</Tooltip>
+											{#if $settings?.speechAutoSend ?? false}
+												<img
+													src="nonexistent_dummy_image.gif"
+													style="display:none"
+													on:error={setTimeout(async () => {
+														recording = automaticRecording;
+													}, 7000)}
+												/>
+
+												<Tooltip content="Toggle automatic voice input">
+													<button
+														id="automatic-voice-input-button"
+														class=" text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 transition rounded-full p-1.5 mr-0.5 self-center"
+														type="button"
+														on:click={async () => {
+															recording = automaticRecording = !automaticRecording;
+														}}
+														aria-label="Automatic Voice Input"
+													>
+														{#if automaticRecording}
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																viewBox="0 0 32 32"
+																fill="green"
+																class="w-5 h-5 translate-y-[0.5px]"
+															>
+																<path
+																	d="M26,16H22a2.002,2.002,0,0,0-2,2V30h2V25h4v5h2V18A2.002,2.002,0,0,0,26,16Zm-4,7V18h4v5Z"
+																/>
+																<path
+																	d="M16,27a10.9862,10.9862,0,0,1-9.2156-5H12V20H4v8H6V24.3149A13.0239,13.0239,0,0,0,16,29Z"
+																/>
+																<path
+																	d="M20,10h5.2155A10.9973,10.9973,0,0,0,5,16H3A13.0048,13.0048,0,0,1,26,7.6849V4h2v8H20Z"
+																/>
+															</svg>
+														{:else}
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																viewBox="0 0 32 32"
+																fill="currentColor"
+																class="w-5 h-5 translate-y-[0.5px]"
+															>
+																<path
+																	d="M26,16H22a2.002,2.002,0,0,0-2,2V30h2V25h4v5h2V18A2.002,2.002,0,0,0,26,16Zm-4,7V18h4v5Z"
+																/>
+																<path
+																	d="M16,27a10.9862,10.9862,0,0,1-9.2156-5H12V20H4v8H6V24.3149A13.0239,13.0239,0,0,0,16,29Z"
+																/>
+																<path
+																	d="M20,10h5.2155A10.9973,10.9973,0,0,0,5,16H3A13.0048,13.0048,0,0,1,26,7.6849V4h2v8H20Z"
+																/>
+															</svg>
+														{/if}
+													</button>
+												</Tooltip>
+											{/if}
 											<Tooltip content={$i18n.t('Record voice')}>
 												<button
 													id="voice-input-button"
