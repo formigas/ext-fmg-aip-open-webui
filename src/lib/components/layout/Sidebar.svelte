@@ -2,7 +2,7 @@
 	import { toast } from 'svelte-sonner';
 	import { v4 as uuidv4 } from 'uuid';
 
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll, replaceState } from '$app/navigation';
 	import {
 		user,
 		chats,
@@ -20,7 +20,8 @@
 		channels,
 		socket,
 		config,
-		isApp
+		isApp,
+		models
 	} from '$lib/stores';
 	import { onMount, getContext, tick, onDestroy } from 'svelte';
 
@@ -58,6 +59,11 @@
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
 	import Home from '../icons/Home.svelte';
+	import ModelSelector from '../chat/ModelSelector.svelte';
+	import Selector from '../chat/ModelSelector/Selector.svelte';
+	import SelectorContent from '../chat/ModelSelector/SelectorContent.svelte';
+	import SelectorLists from '../chat/ModelSelector/SelectorLists.svelte';
+	import Chat from '../chat/Chat.svelte';
 
 	const BREAKPOINT = 768;
 
@@ -78,6 +84,8 @@
 
 	let folders = {};
 	let newFolderId = null;
+
+	let selectorContentRef: { handleKeyboardNavigation: (e: KeyboardEvent) => boolean };
 
 	const initFolders = async () => {
 		const folderList = await getFolders(localStorage.token).catch((error) => {
@@ -653,6 +661,53 @@
 					{/each}
 				</Folder>
 			{/if}
+
+			<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
+				<div class="flex flex-col space-y-1 rounded-xl">
+					<!-- <Selector
+						id={`0`}
+						show={true}
+						placeholder={$i18n.t('Select a model')}
+						items={$models.map((model) => ({
+							value: model.id,
+							label: model.name,
+							model: model
+						}))}
+						showTemporaryChatControl={$user?.role === 'user'
+							? ($user?.permissions?.chat?.temporary ?? true) &&
+								!($user?.permissions?.chat?.temporary_enforced ?? false)
+							: true}
+					/> -->
+					<!-- <SelectorContent
+						bind:this={selectorContentRef}
+						items={$models.map((model) => ({
+							value: model.id,
+							label: model.name,
+							model: model
+						}))}
+						value={null}
+						searchValue={search}
+						show={null}
+						onSelect={() => {}}
+					/> -->
+					<SelectorLists
+						items={$models.map((model) => ({
+							value: model.id,
+							label: model.name,
+							model: model
+						}))}
+						searchEnabled={false}
+						searchPlaceholder={$i18n.t('Search a model')}
+						initNewChat={async () => {
+							goto('/', {
+								replaceState: true,
+								invalidateAll: true,
+								state: { instantNewChat: true }
+							});
+						}}
+					/>
+				</div>
+			</Folder>
 
 			<Folder
 				collapsible={!search}
