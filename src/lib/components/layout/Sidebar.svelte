@@ -56,7 +56,7 @@
 	import ChannelModal from './Sidebar/ChannelModal.svelte';
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
-	import SelectorLists from '../chat/ModelSelector/SelectorLists.svelte';
+	import SelectorList from '../chat/ModelSelector/SelectorList.svelte';
 
 	const BREAKPOINT = 768;
 
@@ -657,7 +657,7 @@
 
 			<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
 				<div class="flex flex-col space-y-1 rounded-xl">
-					<SelectorLists
+					<SelectorList
 						items={$models.map((model) => ({
 							value: model.id,
 							label: model.name,

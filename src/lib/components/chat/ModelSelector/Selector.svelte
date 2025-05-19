@@ -9,7 +9,7 @@
 
 	import { mobile } from '$lib/stores';
 
-	import SelectorLists from './SelectorLists.svelte';
+	import SelectorList from './SelectorList.svelte';
 
 	const i18n = getContext('i18n');
 	const dispatch = createEventDispatcher();
@@ -76,6 +76,6 @@
 		side={$mobile ? 'bottom' : 'bottom-start'}
 		sideOffset={3}
 	>
-		<SelectorLists {items} {searchEnabled} {searchPlaceholder} {showTemporaryChatControl} {value} />
+		<SelectorList {items} {searchEnabled} {searchPlaceholder} {showTemporaryChatControl} {value} />
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
