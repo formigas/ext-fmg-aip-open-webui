@@ -655,20 +655,22 @@
 				</Folder>
 			{/if}
 
-			<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
-				<div class="flex flex-col space-y-1 rounded-xl">
-					<SelectorList
-						items={$models.map((model) => ({
-							value: model.id,
-							label: model.name,
-							model: model
-						}))}
-						searchEnabled={false}
-						searchPlaceholder={$i18n.t('Search a model')}
-						directModelAccess={true}
-					/>
-				</div>
-			</Folder>
+			{#if $settings?.directModelAccess}
+				<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
+					<div class="flex flex-col space-y-1 rounded-xl">
+						<SelectorList
+							items={$models.map((model) => ({
+								value: model.id,
+								label: model.name,
+								model: model
+							}))}
+							searchEnabled={false}
+							searchPlaceholder={$i18n.t('Search a model')}
+							directModelAccess={true}
+						/>
+					</div>
+				</Folder>
+			{/if}
 
 			<Folder
 				collapsible={!search}

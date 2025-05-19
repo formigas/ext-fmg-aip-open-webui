@@ -143,7 +143,7 @@ type Settings = {
 	splitLargeDeltas?: boolean;
 	chatDirection: 'LTR' | 'RTL' | 'auto';
 	ctrlEnterToSend?: boolean;
-
+	directModelAccess?: boolean;
 	system?: string;
 	requestFormat?: string;
 	keepAlive?: string;
