@@ -2,7 +2,7 @@
 	import { toast } from 'svelte-sonner';
 	import { v4 as uuidv4 } from 'uuid';
 
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll, replaceState } from '$app/navigation';
 	import {
 		user,
 		chats,
@@ -21,7 +21,8 @@
 		channels,
 		socket,
 		config,
-		isApp
+		isApp,
+		models
 	} from '$lib/stores';
 	import { onMount, getContext, tick, onDestroy } from 'svelte';
 
@@ -48,20 +49,15 @@
 	import ChatItem from './Sidebar/ChatItem.svelte';
 	import Spinner from '../common/Spinner.svelte';
 	import Loader from '../common/Loader.svelte';
-	import AddFilesPlaceholder from '../AddFilesPlaceholder.svelte';
+	import SearchInput from './Sidebar/SearchInput.svelte';
 	import Folder from '../common/Folder.svelte';
-	import Plus from '../icons/Plus.svelte';
-	import Tooltip from '../common/Tooltip.svelte';
+
 	import Folders from './Sidebar/Folders.svelte';
 	import { getChannels, createNewChannel } from '$lib/apis/channels';
 	import ChannelModal from './Sidebar/ChannelModal.svelte';
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
-	import Home from '../icons/Home.svelte';
-	import MagnifyingGlass from '../icons/MagnifyingGlass.svelte';
-	import SearchModal from './SearchModal.svelte';
-
-	const BREAKPOINT = 768;
+	import SelectorList from '../chat/ModelSelector/SelectorList.svelte';
 
 	let navElement;
 	let shiftKey = false;
@@ -673,6 +669,23 @@
 							}}
 						/>
 					{/each}
+				</Folder>
+			{/if}
+
+			{#if $settings?.directModelAccess}
+				<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
+					<div class="flex flex-col space-y-1 rounded-xl">
+						<SelectorList
+							items={$models.map((model) => ({
+								value: model.id,
+								label: model.name,
+								model: model
+							}))}
+							searchEnabled={false}
+							searchPlaceholder={$i18n.t('Search a model')}
+							directModelAccess={true}
+						/>
+					</div>
 				</Folder>
 			{/if}
 

@@ -329,6 +329,7 @@
 	"Didn't fully follow instructions": "",
 	"Direct": "",
 	"Direct Connections": "",
+	"Direct Model Access": "Direct Model Access in Sidebar",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "",
 	"Direct Connections settings updated": "",
 	"Direct Tool Servers": "",
