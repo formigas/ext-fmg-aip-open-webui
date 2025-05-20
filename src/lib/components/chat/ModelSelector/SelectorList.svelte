@@ -572,7 +572,7 @@
 							</Tooltip>
 						{/if}
 
-						{#if !$mobile && (item?.model?.tags ?? []).length > 0}
+						{#if !directModelAccess && !$mobile && (item?.model?.tags ?? []).length > 0}
 							<div
 								class="flex gap-0.5 self-center items-center h-full translate-y-[0.5px] overflow-x-auto scrollbar-none"
 							>
