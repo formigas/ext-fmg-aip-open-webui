@@ -316,7 +316,7 @@
 				on:keydown={(e) => {
 					if (e.code === 'Enter' && filteredItems.length > 0) {
 						value = filteredItems[selectedModelIdx].value;
-						modelSelectedHandler(filteredItems[selectedModelIdx].value);
+						dispatch('model-selected', filteredItems[selectedModelIdx].value);
 						return; // dont need to scroll on selection
 					} else if (e.code === 'ArrowDown') {
 						selectedModelIdx = Math.min(selectedModelIdx + 1, filteredItems.length - 1);
@@ -335,7 +335,7 @@
 	{/if}
 
 	<div class="px-3 max-h-64 overflow-y-auto scrollbar-hidden group relative">
-		{#if tags && items.filter((item) => !(item.model?.info?.meta?.hidden ?? false)).length > 0}
+		{#if !directModelAccess && tags && items.filter((item) => !(item.model?.info?.meta?.hidden ?? false)).length > 0}
 			<div
 				class=" flex w-full sticky top-0 z-10 bg-white dark:bg-gray-850 overflow-x-auto scrollbar-none"
 				on:wheel={(e) => {
@@ -432,7 +432,7 @@
 				on:click={async () => {
 					value = item.value;
 					selectedModelIdx = index;
-					modelSelectedHandler(item.value);
+					dispatch('model-selected', item.value);
 
 					if (directModelAccess) {
 						await goto('/?model=' + item.model.id);
