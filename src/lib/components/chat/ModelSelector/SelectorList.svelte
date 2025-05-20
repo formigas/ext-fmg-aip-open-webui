@@ -316,7 +316,7 @@
 				on:keydown={(e) => {
 					if (e.code === 'Enter' && filteredItems.length > 0) {
 						value = filteredItems[selectedModelIdx].value;
-						dispatch('model-selected', filteredItems[selectedModelIdx].value);
+						modelSelectedHandler(filteredItems[selectedModelIdx].value);
 						return; // dont need to scroll on selection
 					} else if (e.code === 'ArrowDown') {
 						selectedModelIdx = Math.min(selectedModelIdx + 1, filteredItems.length - 1);
@@ -432,7 +432,7 @@
 				on:click={async () => {
 					value = item.value;
 					selectedModelIdx = index;
-					dispatch('model-selected', item.value);
+					modelSelectedHandler(item.value);
 
 					if (directModelAccess) {
 						await goto('/?model=' + item.model.id);
