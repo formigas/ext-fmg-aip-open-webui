@@ -76,6 +76,20 @@
 		side={$mobile ? 'bottom' : 'bottom-start'}
 		sideOffset={3}
 	>
-		<SelectorList {items} {searchEnabled} {searchPlaceholder} {showTemporaryChatControl} {value} />
+		<SelectorList
+			{items}
+			{searchEnabled}
+			{searchPlaceholder}
+			{showTemporaryChatControl}
+			{value}
+			on:model-selected={(event) => {
+				show = false;
+				value = event.detail;
+				console.log('model-selected', event.detail);
+			}}
+			on:temporary-chat-model-selected={() => {
+				show = false;
+			}}
+		/>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

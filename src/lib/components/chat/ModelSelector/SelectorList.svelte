@@ -13,7 +13,7 @@
 	import { deleteModel, getOllamaVersion, pullModel } from '$lib/apis/ollama';
 	import { capitalizeFirstLetter, sanitizeResponseContent, splitStream } from '$lib/utils';
 
-	import { getContext, onMount, tick } from 'svelte';
+	import { getContext, onMount, tick, createEventDispatcher } from 'svelte';
 	import { getModels } from '$lib/apis';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import Check from '$lib/components/icons/Check.svelte';
@@ -25,9 +25,9 @@
 
 	let searchValue = '';
 
-	let tagsContainerElement;
+	const dispatch = createEventDispatcher();
 
-	let show = false;
+	let tagsContainerElement;
 
 	let tags = [];
 
@@ -54,6 +54,10 @@
 	export let showTemporaryChatControl = false;
 	export let value = '';
 	const showSelectedModel = directModelAccess ? false : true;
+
+	const modelSelectedHandler = (model: string) => {
+		dispatch('model-selected', model);
+	};
 
 	const cancelModelPullHandler = async (model: string) => {
 		const { reader, abortController } = $MODEL_DOWNLOAD_POOL[model];
@@ -312,7 +316,7 @@
 				on:keydown={(e) => {
 					if (e.code === 'Enter' && filteredItems.length > 0) {
 						value = filteredItems[selectedModelIdx].value;
-						show = false;
+						modelSelectedHandler(filteredItems[selectedModelIdx].value);
 						return; // dont need to scroll on selection
 					} else if (e.code === 'ArrowDown') {
 						selectedModelIdx = Math.min(selectedModelIdx + 1, filteredItems.length - 1);
@@ -428,7 +432,7 @@
 				on:click={async () => {
 					value = item.value;
 					selectedModelIdx = index;
-					show = false;
+					modelSelectedHandler(item.value);
 
 					if (directModelAccess) {
 						await goto('/?model=' + item.model.id);
@@ -723,7 +727,7 @@
 						history.replaceState(null, '', location.pathname);
 					}
 
-					show = false;
+					dispatch('temporary-chat-model-selected');
 				}}
 			>
 				<div class="flex gap-2.5 items-center">
