@@ -58,8 +58,6 @@
 	import PencilSquare from '../icons/PencilSquare.svelte';
 	import SelectorList from '../chat/ModelSelector/SelectorList.svelte';
 
-	const BREAKPOINT = 768;
-
 	let navElement;
 	let search = '';
 
@@ -77,8 +75,6 @@
 
 	let folders = {};
 	let newFolderId = null;
-
-	let selectorContentRef: { handleKeyboardNavigation: (e: KeyboardEvent) => boolean };
 
 	const initFolders = async () => {
 		const folderList = await getFolders(localStorage.token).catch((error) => {
