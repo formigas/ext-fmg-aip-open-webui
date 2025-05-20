@@ -58,6 +58,8 @@
 	import ChannelItem from './Sidebar/ChannelItem.svelte';
 	import PencilSquare from '../icons/PencilSquare.svelte';
 	import SelectorList from '../chat/ModelSelector/SelectorList.svelte';
+	import MagnifyingGlass from '../icons/MagnifyingGlass.svelte';
+	import SearchModal from './SearchModal.svelte';
 
 	let navElement;
 	let shiftKey = false;
