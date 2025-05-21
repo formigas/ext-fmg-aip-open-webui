@@ -314,6 +314,7 @@
 	"Direct Connections": "Suorat yhteydet",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "Suorat yhteydet mahdollistavat käyttäjien yhdistää omia OpenAI-yhteensopivia API-päätepisteitä.",
 	"Direct Connections settings updated": "Suorien yhteyksien asetukset päivitetty",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "Suorat työkalu palvelimet",
 	"Disabled": "Ei käytössä",
 	"Discover a function": "Löydä toiminto",

@@ -314,6 +314,7 @@
 	"Direct Connections": "Прямі з'єднання",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "Прямі з'єднання дозволяють користувачам підключатися до своїх власних API-кінцевих точок, сумісних з OpenAI.",
 	"Direct Connections settings updated": "Налаштування прямих з'єднань оновлено",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "",
 	"Disabled": "Вимкнено",
 	"Discover a function": "Знайдіть функцію",

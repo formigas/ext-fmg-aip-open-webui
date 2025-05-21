@@ -314,6 +314,7 @@
 	"Direct Connections": "直接连接",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "直接连接功能允许用户连接至其自有的、兼容 OpenAI 的 API 端点。",
 	"Direct Connections settings updated": "直接连接设置已更新",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "直接连接工具服务器",
 	"Disabled": "禁用",
 	"Discover a function": "发现更多函数",
