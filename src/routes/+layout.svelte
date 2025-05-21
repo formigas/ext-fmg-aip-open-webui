@@ -47,10 +47,11 @@
 	import NotificationToast from '$lib/components/NotificationToast.svelte';
 	import AppSidebar from '$lib/components/app/AppSidebar.svelte';
 	import { chatCompletion } from '$lib/apis/openai';
-
+	import { loadCustomThemesFromLocalStorage } from '$lib/utils/custom-theme';
 	setContext('i18n', i18n);
 
 	const bc = new BroadcastChannel('active-tab-channel');
+	let customThemes = loadCustomThemesFromLocalStorage();
 
 	let loaded = false;
 
@@ -599,6 +600,13 @@
 			loaded = true;
 		}
 
+		const customThemes = $page.data.customThemes;
+
+		if (customThemes && Object.keys(customThemes).length > 0) {
+			localStorage.setItem('customThemes', JSON.stringify(customThemes));
+			console.log('Custom themes stored in localStorage:', customThemes);
+		}
+
 		return () => {
 			window.removeEventListener('resize', onResize);
 		};
@@ -608,6 +616,9 @@
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
+	{#each Object.keys(customThemes) as theme}
+		<link rel="stylesheet" type="text/css" href="/themes/{customThemes[theme].css}" />
+	{/each}
 
 	<!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
 	<!-- feel free to make a PR to fix if anyone wants to see it return -->

@@ -37,6 +37,10 @@
 				const metaThemeColorTag = document.querySelector('meta[name="theme-color"]');
 				const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+				const customThemes = JSON.parse(localStorage.getItem('customThemes') || '{}');
+				const customThemeKeys = Object.keys(customThemes);
+
+
 				if (!localStorage?.theme) {
 					localStorage.theme = 'system';
 				}
@@ -58,6 +62,9 @@
 					document.documentElement.classList.add('dark');
 					document.documentElement.classList.add('her');
 					metaThemeColorTag.setAttribute('content', '#983724');
+				} else if (customThemeKeys.includes(localStorage.theme)) {
+					document.documentElement.classList.add(localStorage.theme);
+					document.documentElement.classList.add(customThemes[localStorage.theme].schema);
 				} else {
 					document.documentElement.classList.add('dark');
 					metaThemeColorTag.setAttribute('content', '#171717');
