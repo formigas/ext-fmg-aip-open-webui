@@ -90,8 +90,6 @@
 	import Spinner from '../common/Spinner.svelte';
 
 	export let chatIdProp = '';
-	export let instantNewChat = false;
-
 	let loading = false;
 
 	const eventTarget = new EventTarget();
@@ -403,18 +401,12 @@
 		$socket?.on('chat-events', chatEventHandler);
 
 		if (!$chatId) {
-			if (instantNewChat) {
-				console.log('instantNewChat', instantNewChat);
-				await tick();
-				await initNewChat();
-			} else {
-				chatIdUnsubscriber = chatId.subscribe(async (value) => {
-					if (!value) {
-						await tick(); // Wait for DOM updates
-						await initNewChat();
-					}
-				});
-			}
+			chatIdUnsubscriber = chatId.subscribe(async (value) => {
+				if (!value) {
+					await tick(); // Wait for DOM updates
+					await initNewChat();
+				}
+			});
 		} else {
 			if ($temporaryChatEnabled) {
 				await goto('/');
