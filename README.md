@@ -62,7 +62,7 @@ For more information, be sure to check out our [Open WebUI Documentation](https:
 
 Want to learn more about Open WebUI's features? Check out our [Open WebUI documentation](https://docs.openwebui.com/features) for a comprehensive overview!
 
-## 🔗 Also Check Out Open WebUI Community!
+## 🔗 Also Check Out Open WebUI Community
 
 Don't forget to explore our sibling project, [Open WebUI Community](https://openwebui.com/), where you can discover, download, and explore customized Modelfiles. Open WebUI Community offers a wide range of exciting possibilities for enhancing your chat interactions with Open WebUI! 🚀
 
@@ -224,5 +224,34 @@ If you have any questions, suggestions, or need assistance, please open an issue
 </a>
 
 ---
+
+## Custom Documentation
+
+### Custom Themes
+
+To setup custom themes follow the steps:
+
+- Replace files like favicon.png, splash.png.. in ./static
+- To add custom styles to project add to env:
+
+```text
+PUBLIC_CUSTOM_THEMES_PATH='./static/themes/custom_themes.json'
+```
+
+- Add custom_themes.json file to './static/themes/
+- Edit the custom_themes.json like this:
+
+```json
+{
+	"custom_theme_id": {
+		"name": "custom_theme_name",
+		"schema": "schema: 'light' or 'dark'",
+		"css": "custom_theme_file_name.css"
+	}
+}
+```
+
+- This contains all needed information to enable the theme in frontend
+- Finally add your custom_theme_file_name.css to ./static/themes/
 
 Created by [Timothy Jaeryang Baek](https://github.com/tjbck) - Let's make Open WebUI even more amazing together! 💪
