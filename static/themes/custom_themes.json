@@ -1,0 +1,7 @@
+{
+    "custom_theme_id": {
+        "name": "custom_theme_name",
+        "schema": "schema: 'light' or 'dark'",
+        "css": "custom_theme_file_name.css"
+    }
+}
