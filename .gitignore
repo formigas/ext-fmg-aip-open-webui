@@ -307,6 +307,3 @@ dist
 cypress/videos
 cypress/screenshots
 .vscode/settings.json
-
-#custom themes
-static/themes/*.css
