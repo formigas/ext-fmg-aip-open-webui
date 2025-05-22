@@ -314,6 +314,7 @@
 	"Direct Connections": "Közvetlen kapcsolatok",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "A közvetlen kapcsolatok lehetővé teszik a felhasználók számára, hogy saját OpenAI kompatibilis API végpontjaikhoz csatlakozzanak.",
 	"Direct Connections settings updated": "Közvetlen kapcsolatok beállításai frissítve",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "Közvetlen eszköszerverek",
 	"Disabled": "Letiltva",
 	"Discover a function": "Funkció felfedezése",

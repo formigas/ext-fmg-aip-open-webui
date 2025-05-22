@@ -314,6 +314,7 @@
 	"Direct Connections": "Otsesed ühendused",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "Otsesed ühendused võimaldavad kasutajatel ühenduda oma OpenAI-ga ühilduvate API lõpp-punktidega.",
 	"Direct Connections settings updated": "Otseste ühenduste seaded uuendatud",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "",
 	"Disabled": "Keelatud",
 	"Discover a function": "Avasta funktsioon",

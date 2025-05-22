@@ -314,6 +314,7 @@
 	"Direct Connections": "Kết nối Trực tiếp",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "Kết nối Trực tiếp cho phép người dùng kết nối với các điểm cuối API tương thích OpenAI của riêng họ.",
 	"Direct Connections settings updated": "Đã cập nhật cài đặt Kết nối Trực tiếp",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "Máy chủ Công cụ Trực tiếp",
 	"Disabled": "Đã tắt",
 	"Discover a function": "Khám phá function",

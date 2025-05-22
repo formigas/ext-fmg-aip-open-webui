@@ -90,7 +90,6 @@
 	import Spinner from '../common/Spinner.svelte';
 
 	export let chatIdProp = '';
-
 	let loading = false;
 
 	const eventTarget = new EventTarget();

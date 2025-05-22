@@ -314,6 +314,7 @@
 	"Direct Connections": "ཐད་ཀར་སྦྲེལ་མཐུད།",
 	"Direct Connections allow users to connect to their own OpenAI compatible API endpoints.": "ཐད་ཀར་སྦྲེལ་མཐུད་ཀྱིས་བེད་སྤྱོད་མཁན་ཚོར་ཁོ་ཚོའི་རང་གི་ OpenAI དང་མཐུན་པའི་ API མཇུག་མཐུད་ལ་སྦྲེལ་བར་གནང་བ་སྤྲོད།",
 	"Direct Connections settings updated": "ཐད་ཀར་སྦྲེལ་མཐུད་ཀྱི་སྒྲིག་འགོད་གསར་སྒྱུར་བྱས།",
+	"Direct Model Access": "",
 	"Direct Tool Servers": "",
 	"Disabled": "ནུས་མེད།",
 	"Discover a function": "ལས་འགན་ཞིག་རྙེད་པ།",
