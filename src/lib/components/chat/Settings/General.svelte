@@ -18,8 +18,10 @@
 	let themes = ['dark', 'light', 'rose-pine dark', 'rose-pine-dawn light', 'oled-dark'];
 	let customThemes = loadCustomThemesFromLocalStorage();
 	let customThemeKeys = Object.keys(customThemes);
-	themes = [...themes, ...customThemeKeys];
 	let selectedTheme = 'system';
+	if (customThemeKeys.length > 0) {
+		themes = [...customThemeKeys];
+	}
 
 	let languages: Awaited<ReturnType<typeof getLanguages>> = [];
 	let lang = $i18n.language;
@@ -249,13 +251,16 @@
 						placeholder="Select a theme"
 						on:change={() => themeChangeHandler(selectedTheme)}
 					>
-						<option value="system">⚙️ {$i18n.t('System')}</option>
-						<option value="dark">🌑 {$i18n.t('Dark')}</option>
-						<option value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
-						<option value="light">☀️ {$i18n.t('Light')}</option>
-						{#each customThemeKeys as theme}
-							<option value={theme}>{customThemes[theme].name}</option>
-						{/each}
+						{#if customThemeKeys.length === 0}
+							<option value="system">⚙️ {$i18n.t('System')}</option>
+							<option value="dark">🌑 {$i18n.t('Dark')}</option>
+							<option value="oled-dark">🌃 {$i18n.t('OLED Dark')}</option>
+							<option value="light">☀️ {$i18n.t('Light')}</option>
+						{:else}
+							{#each customThemeKeys as theme}
+								<option value={theme}>{customThemes[theme].name}</option>
+							{/each}
+						{/if}
 
 						<!-- <option value="maxwild">🌷 Max Wild</option> -->
 						<!-- <option value="rose-pine dark">🪻 {$i18n.t('Rosé Pine')}</option>
