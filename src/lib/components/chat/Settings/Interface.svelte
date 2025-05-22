@@ -299,6 +299,7 @@
 		scrollOnBranchChange = $settings.scrollOnBranchChange ?? true;
 		chatDirection = $settings.chatDirection ?? 'auto';
 		userLocation = $settings.userLocation ?? false;
+		directModelAccess = $settings.directModelAccess ?? false;
 
 		notificationSound = $settings.notificationSound ?? true;
 
