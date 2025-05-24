@@ -232,13 +232,13 @@ If you have any questions, suggestions, or need assistance, please open an issue
 To setup custom themes follow the steps:
 
 - Replace files like favicon.png, splash.png.. in ./static
-- To add custom styles to project add to env:
+- To add custom css styles to the project add to the .env file:
 
 ```text
-PUBLIC_CUSTOM_THEMES_PATH='./static/themes/custom_themes.json'
+PUBLIC_STATIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH='./themes/custom_themes.json'
 ```
 
-- Add custom_themes.json file to './static/themes/
+- Add an empty custom_themes.json file to './themes/'
 - Edit the custom_themes.json like this:
 
 ```json

@@ -3,6 +3,8 @@
 // Documentation: https://kit.svelte.dev/docs/page-options#prerender
 // export const prerender = true;
 
+import { PUBLIC_STATIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH } from '$env/static/public';
+
 // if you want to Generate a SPA
 // you have to set ssr to false.
 // This is not the case (so set as true or comment the line)
@@ -14,3 +16,19 @@ export const ssr = false;
 // the URL for about page will be /about/ with 'always'
 // https://kit.svelte.dev/docs/page-options#trailingslash
 export const trailingSlash = 'ignore';
+
+export const load = async ({ fetch }) => {
+	const res = await fetch(PUBLIC_STATIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH);
+	try {
+		return { customThemes: await res.json() };
+	} catch (error) {
+		if (res.headers.get('content-type') !== 'application/json') {
+			console.warn(
+				`Failed to fetch custom themes. The file is not found or does not contain valid JSON. The probable cause is that the file does not exist and therefore the fallback index.html is returned.`
+			);
+		} else {
+			console.error(error);
+		}
+		return { customThemes: {} };
+	}
+};
