@@ -36,6 +36,10 @@
 	export let title: string = $WEBUI_NAME;
 	export let shareEnabled: boolean = false;
 
+	export const hideNavbarProfileMenu = true;
+	export const hideNavbarChatControlsMenu = true;
+	export const hideNavbarThreeDotsMenu = true;
+
 	export let chat;
 	export let history;
 	export let selectedModels;
@@ -86,7 +90,7 @@
 
 				<div class="self-start flex flex-none items-center text-gray-600 dark:text-gray-400">
 					<!-- <div class="md:hidden flex self-center w-[1px] h-5 mx-2 bg-gray-300 dark:bg-stone-700" /> -->
-					{#if shareEnabled && chat && (chat.id || $temporaryChatEnabled)}
+					{#if shareEnabled && chat && (chat.id || $temporaryChatEnabled) && !hideNavbarThreeDotsMenu}
 						<Menu
 							{chat}
 							{shareEnabled}
@@ -121,6 +125,7 @@
 						</Menu>
 					{/if}
 
+					{#if !hideNavbarChatControlsMenu}
 					<Tooltip content={$i18n.t('Controls')}>
 						<button
 							class=" flex cursor-pointer px-2 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-850 transition"
@@ -132,8 +137,9 @@
 							<div class=" m-auto self-center">
 								<AdjustmentsHorizontal className=" size-5" strokeWidth="0.5" />
 							</div>
-						</button>
-					</Tooltip>
+							</button>
+						</Tooltip>
+					{/if}
 
 					<Tooltip content={$i18n.t('New Chat')}>
 						<button
@@ -152,7 +158,7 @@
 						</button>
 					</Tooltip>
 
-					{#if $user !== undefined && $user !== null}
+					{#if $user !== undefined && $user !== null && !hideNavbarProfileMenu}
 						<UserMenu
 							className="max-w-[200px]"
 							role={$user?.role}
