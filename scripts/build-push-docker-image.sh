@@ -6,6 +6,7 @@ REGISTRY_NAME=acrfmgaiprodgermanywestcentral
 ARCHITECTURE=amd64
 PLATFORM=linux/$ARCHITECTURE
 REPOSITORY_NAME=aip/open-webui
+THEMES_PATH="./themes/custom_themes.json"
 
 ## You need to be logged in to Azure to deploy to the registry
 # az login
@@ -19,7 +20,12 @@ else
     VERSION=$1
 fi
 
-docker buildx build -t $REGISTRY_NAME:$VERSION-$ARCHITECTURE --load --platform $PLATFORM .
+docker buildx build \
+  -t $REGISTRY_NAME:$VERSION-$ARCHITECTURE \
+  --load \
+  --platform $PLATFORM \
+  --build-arg PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH="$THEMES_PATH" \
+  .
 echo "Docker image $REGISTRY_NAME:$VERSION-$ARCHITECTURE built successfully"
 
 docker tag $REGISTRY_NAME:$VERSION-$ARCHITECTURE $REGISTRY_NAME.azurecr.io/$REPOSITORY_NAME:$VERSION-$ARCHITECTURE
