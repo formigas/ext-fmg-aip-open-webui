@@ -3,7 +3,7 @@
 // Documentation: https://kit.svelte.dev/docs/page-options#prerender
 // export const prerender = true;
 
-import { PUBLIC_STATIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
 // if you want to Generate a SPA
 // you have to set ssr to false.
@@ -18,7 +18,12 @@ export const ssr = false;
 export const trailingSlash = 'ignore';
 
 export const load = async ({ fetch }) => {
-	const res = await fetch(PUBLIC_STATIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH);
+	if (!env.PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH) {
+		console.warn('Custom themes path is not set in the environment. Using empty themes.');
+		return { customThemes: {} };
+	}
+	console.log('CUSTOM_THEMES_PATH', env.PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH);
+	const res = await fetch(`/${env.PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH}`);
 	try {
 		return { customThemes: await res.json() };
 	} catch (error) {

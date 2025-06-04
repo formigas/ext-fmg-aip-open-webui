@@ -235,7 +235,7 @@ To setup custom themes follow the steps:
 - To add custom css styles to the project add to the .env file:
 
 ```text
-PUBLIC_STATIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH='./themes/custom_themes.json'
+PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH='./themes/custom_themes.json'
 ```
 
 - Add an empty custom_themes.json file to './themes/'
