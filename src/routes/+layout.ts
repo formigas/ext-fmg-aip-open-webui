@@ -24,7 +24,8 @@ export const load = async ({ fetch }) => {
 	}
 	const res = await fetch(`/${env.PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH}`);
 	try {
-		return { customThemes: await res.json() };
+		const customThemes = await res.json();
+		return { customThemes };
 	} catch (error) {
 		if (res.headers.get('content-type') !== 'application/json') {
 			console.warn(
