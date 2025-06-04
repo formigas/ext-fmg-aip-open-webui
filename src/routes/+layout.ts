@@ -22,7 +22,6 @@ export const load = async ({ fetch }) => {
 		console.warn('Custom themes path is not set in the environment. Using empty themes.');
 		return { customThemes: {} };
 	}
-	console.log('CUSTOM_THEMES_PATH', env.PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH);
 	const res = await fetch(`/${env.PUBLIC_CUSTOM_THEMES_JSON_RELATIVE_TO_ROOT_PATH}`);
 	try {
 		return { customThemes: await res.json() };
