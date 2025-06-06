@@ -47,11 +47,9 @@
 	import NotificationToast from '$lib/components/NotificationToast.svelte';
 	import AppSidebar from '$lib/components/app/AppSidebar.svelte';
 	import { chatCompletion } from '$lib/apis/openai';
-	import { loadCustomThemesFromLocalStorage } from '$lib/utils/custom-theme';
 	setContext('i18n', i18n);
 
 	const bc = new BroadcastChannel('active-tab-channel');
-	let customThemes = loadCustomThemesFromLocalStorage();
 
 	let loaded = false;
 
@@ -472,11 +470,32 @@
 			}
 		};
 
+		const handleCustomThemes = () => {
+			const customThemes = $page.data.customThemes;
+			const customThemeKeys = Object.keys(customThemes);
+
+			if (customThemes && customThemeKeys.length > 0) {
+				localStorage.setItem('customThemes', JSON.stringify(customThemes));
+				console.log('Custom themes stored in localStorage:', customThemes);
+			}
+			if (localStorage.theme === 'system' && customThemeKeys.length > 0) {
+				localStorage.setItem('theme', customThemeKeys[0]);
+				document.documentElement.classList.add(customThemeKeys[0]);
+				document.documentElement.classList.add(customThemes[customThemeKeys[0]].schema);
+			} else if (customThemeKeys.length > 0) {
+				localStorage.setItem('theme', localStorage.theme);
+				document.documentElement.classList.add(localStorage.theme);
+				document.documentElement.classList.add(customThemes[localStorage.theme].schema);
+			}
+		};
+
 		// Add event listener for visibility state changes
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
 		// Call visibility change handler initially to set state on load
 		handleVisibilityChange();
+
+		handleCustomThemes();
 
 		theme.set(localStorage.theme);
 
@@ -600,13 +619,6 @@
 			loaded = true;
 		}
 
-		const customThemes = $page.data.customThemes;
-
-		if (customThemes && Object.keys(customThemes).length > 0) {
-			localStorage.setItem('customThemes', JSON.stringify(customThemes));
-			console.log('Custom themes stored in localStorage:', customThemes);
-		}
-
 		return () => {
 			window.removeEventListener('resize', onResize);
 		};
@@ -616,8 +628,8 @@
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
-	{#each Object.keys(customThemes) as theme}
-		<link rel="stylesheet" type="text/css" href="/themes/{customThemes[theme].css}" />
+	{#each Object.keys($page.data.customThemes) as theme}
+		<link rel="stylesheet" type="text/css" href="/themes/{$page.data.customThemes[theme].css}" />
 	{/each}
 
 	<!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
