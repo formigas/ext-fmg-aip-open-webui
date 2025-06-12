@@ -201,6 +201,7 @@
 			<div>
 				<div class=" flex items-center gap-3 justify-between text-xs uppercase px-1 font-bold">
 					<div class="w-full">Group</div>
+					<div class="w-full">Description</div>
 
 					<div class="w-full">Users</div>
 

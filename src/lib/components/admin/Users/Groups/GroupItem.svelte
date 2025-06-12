@@ -14,7 +14,8 @@
 	export let users = [];
 	export let group = {
 		name: 'Admins',
-		user_ids: [1, 2, 3]
+		user_ids: [1, 2, 3],
+		description: 'Admins group'
 	};
 
 	export let setGroups = () => {};
@@ -66,6 +67,10 @@
 			<UserCircleSolid className="size-4" />
 		</div>
 		{group.name}
+	</div>
+
+	<div class="flex items-center gap-1.5 w-full font-medium">
+		{group.description}
 	</div>
 
 	<div class="flex items-center gap-1.5 w-full font-medium">
