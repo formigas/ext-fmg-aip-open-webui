@@ -40,7 +40,7 @@
 	let largeTextAsFile = false;
 
 	let landingPageMode = '';
-	let directModelAccess = false;
+	let directModelAccess = true;
 	let chatBubble = true;
 	let chatDirection: 'LTR' | 'RTL' | 'auto' = 'auto';
 	let ctrlEnterToSend = false;
@@ -299,7 +299,7 @@
 		scrollOnBranchChange = $settings.scrollOnBranchChange ?? true;
 		chatDirection = $settings.chatDirection ?? 'auto';
 		userLocation = $settings.userLocation ?? false;
-		directModelAccess = $settings.directModelAccess ?? false;
+		directModelAccess = $settings.directModelAccess ?? true;
 
 		notificationSound = $settings.notificationSound ?? true;
 

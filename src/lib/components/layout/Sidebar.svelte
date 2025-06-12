@@ -651,7 +651,7 @@
 				</Folder>
 			{/if}
 
-			{#if $settings?.directModelAccess ?? false}
+			{#if $settings?.directModelAccess ?? true}
 				<Folder collapsible={true} className="px-2 mt-0.5" name={'Assistants'}>
 					<div class="flex flex-col space-y-1 rounded-xl">
 						<SelectorList
