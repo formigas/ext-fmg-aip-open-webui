@@ -234,6 +234,7 @@
 		theme.set(_theme);
 		localStorage.setItem('theme', _theme);
 		applyTheme(_theme);
+		window.location.reload();
 	};
 </script>
 
