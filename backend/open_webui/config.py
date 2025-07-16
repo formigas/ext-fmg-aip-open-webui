@@ -1850,6 +1850,12 @@ RAG_FILE_MAX_SIZE = PersistentConfig(
     ),
 )
 
+FILETYPES_SIZE_MAPPING = PersistentConfig(
+    "FILETYPES_SIZE_MAPPING",
+    "rag.file.filetypes_size_mapping",
+    json.loads(os.environ.get("FILETYPES_SIZE_MAPPING", "{}")),
+)
+
 RAG_EMBEDDING_ENGINE = PersistentConfig(
     "RAG_EMBEDDING_ENGINE",
     "rag.embedding_engine",

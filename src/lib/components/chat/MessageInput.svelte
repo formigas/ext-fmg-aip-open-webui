@@ -238,6 +238,24 @@
 				extension: file.name.split('.').at(-1)
 			});
 
+			const fileTypeSizeMappingKeys = Object.keys($config?.file?.filetypes_size_mapping || {});
+			if (fileTypeSizeMappingKeys.includes(file.type)) {
+				console.log('File types size mapping:', $config?.file?.filetypes_size_mapping);
+
+				const fileSize = file.size;
+				const fileTypeMaxSize = $config?.file?.filetypes_size_mapping[file.type];
+
+				if (fileSize > fileTypeMaxSize * 1024 * 1024) {
+					toast.error(
+						$i18n.t(`File size for {{fileType}} should not exceed {{maxSize}} MB.`, {
+							fileType: file.type,
+							maxSize: fileTypeMaxSize
+						})
+					);
+					return;
+				}
+			}
+
 			if (
 				($config?.file?.max_size ?? null) !== null &&
 				file.size > ($config?.file?.max_size ?? 0) * 1024 * 1024

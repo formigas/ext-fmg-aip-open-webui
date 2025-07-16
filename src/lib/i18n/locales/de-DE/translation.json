@@ -534,6 +534,7 @@
 	"File not found.": "Datei nicht gefunden.",
 	"File removed successfully.": "Datei erfolgreich entfernt.",
 	"File size should not exceed {{maxSize}} MB.": "Datei darf nicht größer als {{maxSize}} MB sein.",
+	"File size for {{fileType}} should not exceed {{maxSize}} MB.": "Datei für {{fileType}} darf nicht größer als {{maxSize}} MB sein.",
 	"File uploaded successfully": "Datei erfolgreich hochgeladen",
 	"Files": "Dateien",
 	"Filter is now globally disabled": "Filter ist jetzt global deaktiviert",

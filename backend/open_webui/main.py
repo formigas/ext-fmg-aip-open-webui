@@ -186,6 +186,7 @@ from open_webui.config import (
     RAG_RELEVANCE_THRESHOLD,
     RAG_FILE_MAX_COUNT,
     RAG_FILE_MAX_SIZE,
+    FILETYPES_SIZE_MAPPING,
     RAG_OPENAI_API_BASE_URL,
     RAG_OPENAI_API_KEY,
     RAG_OLLAMA_BASE_URL,
@@ -594,6 +595,7 @@ app.state.config.TOP_K_RERANKER = RAG_TOP_K_RERANKER
 app.state.config.RELEVANCE_THRESHOLD = RAG_RELEVANCE_THRESHOLD
 app.state.config.FILE_MAX_SIZE = RAG_FILE_MAX_SIZE
 app.state.config.FILE_MAX_COUNT = RAG_FILE_MAX_COUNT
+app.state.config.FILETYPES_SIZE_MAPPING = FILETYPES_SIZE_MAPPING
 
 
 app.state.config.RAG_FULL_CONTEXT = RAG_FULL_CONTEXT
@@ -1321,6 +1323,7 @@ async def get_app_config(request: Request):
                 "file": {
                     "max_size": app.state.config.FILE_MAX_SIZE,
                     "max_count": app.state.config.FILE_MAX_COUNT,
+                    "filetypes_size_mapping": app.state.config.FILETYPES_SIZE_MAPPING,
                 },
                 "permissions": {**app.state.config.USER_PERMISSIONS},
                 "google_drive": {
