@@ -159,6 +159,43 @@ class ChatTable:
             return ChatModel.model_validate(result) if result else None
 
     def update_chat_by_id(self, id: str, chat: dict) -> Optional[ChatModel]:
+        # Clean up files and sources from history and messages to avoid sending them multiplied to the client
+        history = chat.get("history", {})
+        print("history update", history)
+        
+        # Handle history messages
+        historyMessages = history.get("messages", {})
+        if isinstance(historyMessages, dict):
+            for msg_id, msg in historyMessages.items():
+                if isinstance(msg, dict):
+                    msg.pop("files", None)
+                    msg.pop("sources", None)
+        elif isinstance(historyMessages, list):
+            for msg in historyMessages:
+                if isinstance(msg, dict):
+                    msg.pop("files", None)
+                    msg.pop("sources", None)
+
+        chat["history"] = history
+        
+        # Handle main messages
+        messages = chat.get("messages", {})
+        if isinstance(messages, dict):
+            messages.pop("files", None)
+            for msg_id, msg in messages.items():
+                if isinstance(msg, dict):
+                    msg.pop("files", None)
+                    msg.pop("sources", None)
+        elif isinstance(messages, list):
+            for msg in messages:
+                if isinstance(msg, dict):
+                    msg.pop("files", None)
+                    msg.pop("sources", None)
+
+        chat["messages"] = messages
+
+        print("mutated chat update:", chat)
+
         try:
             with get_db() as db:
                 chat_item = db.get(Chat, id)
