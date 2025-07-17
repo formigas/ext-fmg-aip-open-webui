@@ -161,7 +161,6 @@ class ChatTable:
     def update_chat_by_id(self, id: str, chat: dict) -> Optional[ChatModel]:
         # Clean up files and sources from history and messages to avoid sending them multiplied to the client
         history = chat.get("history", {})
-        print("history update", history)
         
         # Handle history messages
         historyMessages = history.get("messages", {})
@@ -194,7 +193,6 @@ class ChatTable:
 
         chat["messages"] = messages
 
-        print("mutated chat update:", chat)
 
         try:
             with get_db() as db:
