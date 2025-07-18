@@ -1175,6 +1175,13 @@ async def chat_completed(
     try:
         model_item = form_data.pop("model_item", {})
 
+        # Clean up files and sources from messages to avoid sending them multiplied to the client
+        messages = form_data.get("messages", [])
+        for msg in messages:
+            msg.pop("sources", None)
+            msg.pop("files", None)
+        form_data["messages"] = messages
+
         if model_item.get("direct", False):
             request.state.direct = True
             request.state.model = model_item
