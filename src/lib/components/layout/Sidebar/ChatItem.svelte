@@ -51,11 +51,14 @@
 
 	let mouseOver = false;
 	let draggable = false;
+	$: if (mouseOver) {
+		loadChat();
+	}
 
 	const loadChat = async () => {
 		if (!chat) {
 			draggable = false;
-			chat = await getChatById(localStorage.token, id);
+			// chat = await getChatById(localStorage.token, id);
 			draggable = true;
 		}
 	};
