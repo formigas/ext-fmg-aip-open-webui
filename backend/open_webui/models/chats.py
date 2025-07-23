@@ -159,6 +159,48 @@ class ChatTable:
             return ChatModel.model_validate(result) if result else None
 
     def update_chat_by_id(self, id: str, chat: dict) -> Optional[ChatModel]:
+        # Clean up files and sources from history and messages to avoid sending them multiplied to the client
+        history = chat.get("history", {})
+        
+        # Handle history messages
+        historyMessages = history.get("messages", {})
+        for _, msg in historyMessages.items():
+            # msg.pop("files", None)
+            files = msg.get("files", [])
+            for file in files:
+                file.pop("file", None)
+            msg["files"] = files
+
+            sources = msg.get("sources", [])
+            for source in sources:
+                source.get("source", {}).pop("file", None)
+                document = source.get("document",[])
+                metadata = source.get("metadata", [])
+                for meta in metadata:
+                    # delete contentful unnecessary fields from metadata
+                    meta.pop("content", None)
+                    meta.pop("pages", None)
+                    meta.pop("paragraphs", None)
+                    meta.pop("sections", None)
+
+                source["metadata"] = metadata
+
+                if document:
+                    # Fill with empty space to avoid check for empty array and show sources in chat
+                    source["document"] = [" "]
+
+            msg["sources"] = sources
+        chat["history"] = history
+        
+        # Handle main messages
+        messages = chat.get("messages", [])
+        
+        for msg in messages:
+            msg.pop("sources", None)
+            msg.pop("files", None)
+
+        chat["messages"] = messages
+
         try:
             with get_db() as db:
                 chat_item = db.get(Chat, id)
