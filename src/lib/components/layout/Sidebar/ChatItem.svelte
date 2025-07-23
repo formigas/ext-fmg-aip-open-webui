@@ -58,6 +58,7 @@
 	const loadChat = async () => {
 		if (!chat) {
 			draggable = false;
+			// We don't want to load the chat when its hovered over, because these could lead to a lot of requests when many files are attached to the chat
 			// chat = await getChatById(localStorage.token, id);
 			draggable = true;
 		}
